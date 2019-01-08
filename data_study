@@ -1,0 +1,55 @@
+# Check the ammount of pairs that are included in class True and False  
+c=0
+k=0
+for i in range (len(d)):
+    if d[i].get('decision')==True:
+        k+=1
+    else:
+        c+=1
+print('The len of the training data is: ', len(d))
+print('The len of the True is: ', k)
+print('The len of the Faulse is: ',c)
+############################################################################################
+
+#Sort cadidates A and B data
+all_A=[]
+all_B=[]
+for i in range(len(d)):
+    for key in sorted(d[i]['candidateA'].keys()):
+        all_A.append(key)
+        #pass
+    for key_ in sorted(d[i]['candidateB'].keys()):
+        all_B.append(key_)
+        #pass
+all_AB=all_A+all_B
+_c=Counter(all_AB)
+freq=sorted(_c.items(), key=operator.itemgetter(1))
+print('All the candidates (A + B) are: ', len(d)*2 )
+print('The different keys that exists are: ', len(freq))
+print('the freq of the keys are: ', freq)
+
+
+############################################################################################
+
+#Plot the freq
+freq_df=pd.DataFrame(freq, columns=("id", "freq_val"))
+freq_df["max_val"]=max(freq_df.freq_val)
+sns.set(style="whitegrid")
+# Initialize the matplotlib figure
+f, ax = plt.subplots(figsize=(6, 15))
+
+# Plot the total crashes
+sns.set_color_codes("pastel")
+sns.barplot(x="max_val", y="id", data=freq_df,
+            label="Total", color="b")
+
+# Plot the crashes where alcohol was involved
+sns.set_color_codes("muted")
+sns.barplot(x="freq_val", y="id", data=freq_df,
+            label="Existing Values", color="b")
+
+# Add a legend and informative axis label
+ax.legend(ncol=2, loc="lower right", frameon=True)
+ax.set(xlim=(0, max(freq_df.freq_val)), ylabel="",
+       xlabel="Frequency of the individuals characteristics ")
+sns.despine(left=True, bottom=True)
