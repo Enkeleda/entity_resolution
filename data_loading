@@ -1,0 +1,9 @@
+##################
+#Load the data
+#################
+k=0
+with open('enity_data.json') as json_data:
+    enity_data = json.load(json_data)
+    k+=1
+    
+# enity_data contains all the entity's information 
