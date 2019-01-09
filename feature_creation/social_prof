@@ -1,0 +1,220 @@
+#######################
+# SOCIAL PROFILE DATA
+#######################
+# Create a df including only the social media elementes that we will use (facebook, twitter, linkedIn, googleplus) 
+A_sp_df=pd.DataFrame(index=_x.index,columns=['linkedin', 'facebook','twitter','googleplus','us_linkedin', 'us_facebook','us_twitter','us_googleplus'])
+B_sp_df=pd.DataFrame(index=_x.index,columns=['linkedin', 'facebook','twitter','googleplus','us_linkedin', 'us_facebook','us_twitter','us_googleplus'])
+for i in range(len(d)):
+    ################
+    ## Candidate A
+    ################
+    for j in range(len(d[i]['candidateA']['social_profiles'])):
+        if 'type' in d[i]['candidateA']['social_profiles'][j]:
+            #linkedIn
+            if 'linkedin' in d[i]['candidateA']['social_profiles'][j]['type']:
+                if 'url' in d[i]['candidateA']['social_profiles'][j].keys():
+                    A_sp_df['linkedin'][i]=d[i]['candidateA']['social_profiles'][j]['url']
+                else:
+                    A_sp_df['linkedin'][i]=-1
+                if 'username' in d[i]['candidateA']['social_profiles'][j].keys():
+                    A_sp_df['us_linkedin'][i]=d[i]['candidateA']['social_profiles'][j]['username']
+                else:
+                    A_sp_df['us_linkedin'][i]=-1    
+            
+            #facebook
+            if 'facebook' in d[i]['candidateA']['social_profiles'][j]['type']:
+                if 'url' in d[i]['candidateA']['social_profiles'][j].keys():
+                    A_sp_df['facebook'][i]=d[i]['candidateA']['social_profiles'][j]['url']
+                else:
+                    A_sp_df['facebook'][i]=-1
+                if 'username' in d[i]['candidateA']['social_profiles'][j].keys():
+                    A_sp_df['us_facebook'][i]=d[i]['candidateA']['social_profiles'][j]['username']
+                else:
+                    A_sp_df['us_facebook'][i]=-1  
+                    
+            # twitter       
+            if 'twitter' in d[i]['candidateA']['social_profiles'][j]['type']:
+                if 'url' in d[i]['candidateA']['social_profiles'][j].keys():
+                    A_sp_df['twitter'][i]=d[i]['candidateA']['social_profiles'][j]['url']
+                else:
+                    A_sp_df['twitter'][i]=-1
+                if 'username' in d[i]['candidateA']['social_profiles'][j].keys():
+                    A_sp_df['us_twitter'][i]=d[i]['candidateA']['social_profiles'][j]['username']
+                else:
+                    A_sp_df['us_twitter'][i]=-1
+                    
+             #googleplus       
+            if 'googleplus' in d[i]['candidateA']['social_profiles'][j]['type']:
+                if 'url' in d[i]['candidateA']['social_profiles'][j].keys():
+                    A_sp_df['googleplus'][i]=d[i]['candidateA']['social_profiles'][j]['url']
+                else:
+                    A_sp_df['googleplus'][i]=-1
+                if 'username' in d[i]['candidateA']['social_profiles'][j].keys():
+                    A_sp_df['us_googleplus'][i]=d[i]['candidateA']['social_profiles'][j]['username']
+                else:
+                    A_sp_df['us_googleplus'][i]=-1
+        else:
+            A_sp_df['linkedin'][i]=-1
+            A_sp_df['us_linkedin'][i]=-1
+            A_sp_df['facebook'][i]=-1
+            A_sp_df['us_facebook'][i]=-1
+            A_sp_df['twitter'][i]=-1
+            A_sp_df['us_twitter'][i]=-1
+            A_sp_df['googleplus'][i]=-1
+            A_sp_df['us_googleplus'][i]=-1
+            
+    ################
+    ## Candidate B
+    ################
+    for j in range(len(d[i]['candidateB']['social_profiles'])):
+        if 'type' in d[i]['candidateB']['social_profiles'][j]:
+            #linkedIn
+            if 'linkedin' in d[i]['candidateB']['social_profiles'][j]['type']:
+                if 'url' in d[i]['candidateB']['social_profiles'][j].keys():
+                    B_sp_df['linkedin'][i]=d[i]['candidateB']['social_profiles'][j]['url']
+                else:
+                    B_sp_df['linkedin'][i]=-1
+                if 'username' in d[i]['candidateB']['social_profiles'][j].keys():
+                    B_sp_df['us_linkedin'][i]=d[i]['candidateB']['social_profiles'][j]['username']
+                else:
+                    B_sp_df['us_linkedin'][i]=-1    
+            
+            #facebook
+            if 'facebook' in d[i]['candidateB']['social_profiles'][j]['type']:
+                if 'url' in d[i]['candidateB']['social_profiles'][j].keys():
+                    B_sp_df['facebook'][i]=d[i]['candidateB']['social_profiles'][j]['url']
+                else:
+                    B_sp_df['facebook'][i]=-1
+                if 'username' in d[i]['candidateB']['social_profiles'][j].keys():
+                    B_sp_df['us_facebook'][i]=d[i]['candidateB']['social_profiles'][j]['username']
+                else:
+                    B_sp_df['us_facebook'][i]=-1  
+                    
+            # twitter       
+            if 'twitter' in d[i]['candidateB']['social_profiles'][j]['type']:
+                if 'url' in d[i]['candidateB']['social_profiles'][j].keys():
+                    B_sp_df['twitter'][i]=d[i]['candidateB']['social_profiles'][j]['url']
+                else:
+                    B_sp_df['twitter'][i]=-1
+                if 'username' in d[i]['candidateB']['social_profiles'][j].keys():
+                    B_sp_df['us_twitter'][i]=d[i]['candidateB']['social_profiles'][j]['username']
+                else:
+                    B_sp_df['us_twitter'][i]=-1
+                    
+             #googleplus       
+            if 'googleplus' in d[i]['candidateB']['social_profiles'][j]['type']:
+                if 'url' in d[i]['candidateB']['social_profiles'][j].keys():
+                    B_sp_df['googleplus'][i]=d[i]['candidateB']['social_profiles'][j]['url']
+                else:
+                    B_sp_df['googleplus'][i]=-1
+                if 'username' in d[i]['candidateB']['social_profiles'][j].keys():
+                    B_sp_df['us_googleplus'][i]=d[i]['candidateB']['social_profiles'][j]['username']
+                else:
+                    B_sp_df['us_googleplus'][i]=-1
+        else:
+            B_sp_df['linkedin'][i]=-1
+            B_sp_df['us_linkedin'][i]=-1
+            B_sp_df['facebook'][i]=-1
+            B_sp_df['us_facebook'][i]=-1
+            B_sp_df['twitter'][i]=-1
+            B_sp_df['us_twitter'][i]=-1
+            B_sp_df['googleplus'][i]=-1
+            B_sp_df['us_googleplus'][i]=-1        
+            
+         
+         
+##############################################################################################
+# Get the features from the social profiles 
+##############################################################################################
+for i in range(len(d)):
+    # linkedIn
+    if A_sp_df['linkedin'][i]!=-1 and B_sp_df['linkedin'][i]!=-1 and pd.notnull(A_sp_df['linkedin'][i]) and pd.notnull(B_sp_df['linkedin'][i]) :
+        _pre_features_df['linkedin_exist_A_B'][i]=1
+        _pre_features_df['linkedin_url_A_vs_url_B'][i]=full_match(A_sp_df['linkedin'][i],B_sp_df['linkedin'][i])
+    else:
+        _pre_features_df['linkedin_exist_A_B'][i]=0
+        _pre_features_df['linkedin_url_A_vs_url_B'][i]=-1
+    #A
+    if A_sp_df['linkedin'][i]!=-1 and pd.notnull(A_emails_df['last_name'][i]) and pd.notnull(A_sp_df['linkedin'][i]):
+        _pre_features_df['linkedin_url_vs_name_A'][i]=name_included(A_emails_df['first_name'][i],A_sp_df['linkedin'][i])
+        _pre_features_df['linkedin_url_vs_last_A'][i]=name_included(A_emails_df['last_name'][i],A_sp_df['linkedin'][i])
+    else:
+        _pre_features_df['linkedin_url_vs_name_A'][i]=-1
+        _pre_features_df['linkedin_url_vs_last_A'][i]=-1
+    # B
+    if B_sp_df['linkedin'][i]!=-1 and pd.notnull(B_emails_df['last_name'][i]) and pd.notnull(B_sp_df['linkedin'][i]):
+        _pre_features_df['linkedin_url_vs_name_B'][i]=name_included(B_emails_df['first_name'][i],B_sp_df['linkedin'][i])
+        _pre_features_df['linkedin_url_vs_last_B'][i]=name_included(B_emails_df['last_name'][i],B_sp_df['linkedin'][i])
+    else:
+        _pre_features_df['linkedin_url_vs_name_B'][i]=-1
+        _pre_features_df['linkedin_url_vs_last_B'][i]=-1
+    
+    #facebook
+    if A_sp_df['facebook'][i]!=-1 and B_sp_df['facebook'][i]!=-1 and pd.notnull(A_sp_df['facebook'][i]) and pd.notnull(B_sp_df['facebook'][i]) :
+        _pre_features_df['facebook_exist_A_B'][i]=1
+        _pre_features_df['face_recog_A_vs_B'][i]=full_match(A_sp_df['facebook'][i],B_sp_df['facebook'][i])
+    else:
+        _pre_features_df['facebook_exist_A_B'][i]=0
+        _pre_features_df['face_recog_A_vs_B'][i]=-1
+    #A
+    if A_sp_df['facebook'][i]!=-1 and pd.notnull(A_emails_df['last_name'][i]) and pd.notnull(A_sp_df['facebook'][i]):
+        _pre_features_df['facebook_url_vs_name_A'][i]=name_included(A_emails_df['first_name'][i],A_sp_df['facebook'][i])
+        _pre_features_df['facebook_url_vs_last_A'][i]=name_included(A_emails_df['last_name'][i],A_sp_df['facebook'][i])
+    else:
+        _pre_features_df['facebook_url_vs_name_A'][i]=-1
+        _pre_features_df['facebook_url_vs_last_A'][i]=-1
+    # B
+    if B_sp_df['facebook'][i]!=-1 and pd.notnull(B_emails_df['last_name'][i]) and pd.notnull(B_sp_df['facebook'][i]):
+        _pre_features_df['facebook_url_vs_name_B'][i]=name_included(B_emails_df['first_name'][i],B_sp_df['facebook'][i])
+        _pre_features_df['facebook_url_vs_last_B'][i]=name_included(B_emails_df['last_name'][i],B_sp_df['facebook'][i])
+    else:
+        _pre_features_df['facebook_url_vs_name_B'][i]=-1
+        _pre_features_df['facebook_url_vs_last_B'][i]=-1
+        
+        
+    #twitter
+    if A_sp_df['twitter'][i]!=-1 and B_sp_df['twitter'][i]!=-1 and pd.notnull(A_sp_df['twitter'][i]) and pd.notnull(B_sp_df['twitter'][i]) :
+        _pre_features_df['twitter_exist_A_B'][i]=1
+        _pre_features_df['twitter_url_A_vs_url_B'][i]=full_match(A_sp_df['twitter'][i],B_sp_df['twitter'][i])
+    else:
+        _pre_features_df['twitter_exist_A_B'][i]=0
+        _pre_features_df['twitter_url_A_vs_url_B'][i]=-1
+    #A
+    if A_sp_df['twitter'][i]!=-1 and pd.notnull(A_emails_df['last_name'][i]) and pd.notnull(B_emails_df['first_name'][i]) and pd.notnull(A_sp_df['twitter'][i]):
+        _pre_features_df['twitter_url_vs_name_A'][i]=name_included(A_emails_df['first_name'][i],A_sp_df['twitter'][i])
+        _pre_features_df['twitter_url_vs_last_A'][i]=name_included(A_emails_df['last_name'][i],A_sp_df['twitter'][i])
+    else:
+        _pre_features_df['twitter_url_vs_name_A'][i]=-1
+        _pre_features_df['twitter_url_vs_last_A'][i]=-1
+    # B
+    if B_sp_df['twitter'][i]!=-1 and pd.notnull(B_emails_df['last_name'][i]) and pd.notnull(B_emails_df['first_name'][i]) and pd.notnull(B_sp_df['twitter'][i]):
+        _pre_features_df['twitter_url_vs_name_B'][i]=name_included(B_emails_df['first_name'][i],B_sp_df['twitter'][i])
+        _pre_features_df['twitter_url_vs_last_B'][i]=name_included(B_emails_df['last_name'][i],B_sp_df['twitter'][i])
+    else:
+        _pre_features_df['twitter_url_vs_name_B'][i]=-1
+        _pre_features_df['twitter_url_vs_last_B'][i]=-1   
+        
+    #googleplus
+    if A_sp_df['googleplus'][i]!=-1 and B_sp_df['googleplus'][i]!=-1 and pd.notnull(A_sp_df['googleplus'][i]) and pd.notnull(B_sp_df['googleplus'][i]) :
+        _pre_features_df['googleplus_exist_A_B'][i]=1
+        _pre_features_df['googleplus_url_A_vs_url_B'][i]=full_match(A_sp_df['googleplus'][i],B_sp_df['googleplus'][i])
+    else:
+        _pre_features_df['googleplus_exist_A_B'][i]=0
+        _pre_features_df['googleplus_url_A_vs_url_B'][i]=-1
+    #A
+    if A_sp_df['googleplus'][i]!=-1 and pd.notnull(A_emails_df['last_name'][i]) and pd.notnull(B_emails_df['first_name'][i]) and pd.notnull(A_sp_df['googleplus'][i]):
+        _pre_features_df['googleplus_url_vs_name_A'][i]=name_included(A_emails_df['first_name'][i],A_sp_df['googleplus'][i])
+        _pre_features_df['googleplus_url_vs_last_A'][i]=name_included(A_emails_df['last_name'][i],A_sp_df['googleplus'][i])
+    else:
+        _pre_features_df['googleplus_url_vs_name_A'][i]=-1
+        _pre_features_df['googleplus_url_vs_last_A'][i]=-1
+    # B
+    if B_sp_df['googleplus'][i]!=-1 and pd.notnull(B_emails_df['last_name'][i]) and pd.notnull(B_emails_df['first_name'][i]) and pd.notnull(B_sp_df['googleplus'][i]):
+        _pre_features_df['googleplus_url_vs_name_B'][i]=name_included(B_emails_df['first_name'][i],B_sp_df['googleplus'][i])
+        _pre_features_df['googleplus_url_vs_last_B'][i]=name_included(B_emails_df['last_name'][i],B_sp_df['googleplus'][i])
+    else:
+        _pre_features_df['googleplus_url_vs_name_B'][i]=-1
+        _pre_features_df['googleplus_url_vs_last_B'][i]=-1    
+        
+  
+  
