@@ -1,4 +1,11 @@
-# Check the ammount of pairs that are included in class True and False  
+############################################################################################
+# In order to be able to manage and process the data first we need to study them, see what infromation do we have
+# Follows up some ways of studying the data 
+############################################################################################
+############################################################################################
+# Check the ammount of pairs that are included in class True and False
+# d is our loaded dataset
+###################################
 c=0
 k=0
 for i in range (len(d)):
@@ -10,8 +17,9 @@ print('The len of the training data is: ', len(d))
 print('The len of the True is: ', k)
 print('The len of the Faulse is: ',c)
 ############################################################################################
-
+############################################################################################
 #Sort cadidates A and B data
+####################################
 all_A=[]
 all_B=[]
 for i in range(len(d)):
@@ -27,11 +35,10 @@ freq=sorted(_c.items(), key=operator.itemgetter(1))
 print('All the candidates (A + B) are: ', len(d)*2 )
 print('The different keys that exists are: ', len(freq))
 print('the freq of the keys are: ', freq)
-
-
 ############################################################################################
-
+############################################################################################
 #Plot the freq
+##################
 freq_df=pd.DataFrame(freq, columns=("id", "freq_val"))
 freq_df["max_val"]=max(freq_df.freq_val)
 sns.set(style="whitegrid")
@@ -53,3 +60,59 @@ ax.legend(ncol=2, loc="lower right", frameon=True)
 ax.set(xlim=(0, max(freq_df.freq_val)), ylabel="",
        xlabel="Frequency of the individuals characteristics ")
 sns.despine(left=True, bottom=True)
+############################################################################################
+############################################################################################
+#Count the frequency of reappearance of each entity 
+###################################################
+c=0
+zz=[]
+k=0
+for j in range(len(d)):
+    for i in range(len(d)):
+        c=i+1
+        if i<len(d):
+            if (d[j]['candidateB']==d[c]['candidateA']) :
+                    #print("true")
+                    k+=1
+    zz.append(k)
+    k=0
+print('Similar A candidatas are:',k)
+counter=collections.Counter(zz)
+print('The frequency of the similar candidates are',counter)
+############################################################################################
+############################################################################################
+# Evaluate the candidates' keys( information) 
+###################################################
+#Not all the candidates have the same amount of keys( information)
+max_len=[]
+all_keys=[]
+_k=0
+_z=0
+for i in range(len(d)):
+    if len(d[i]['candidateA'])==len(d[i]['candidateB']):
+        _k+=1
+    max_len.append(max(len(d[i]['candidateA']),len(d[i]['candidateB'])))
+    if (_z==0):
+        if len(d[i]['candidateA'])==17:
+            print('A')
+            print(d[i]['candidateA'].keys())
+            _z=1
+        if len(d[i]['candidateB'])==17:
+            print('B')
+            print(d[i]['candidateB'].keys())
+            _z=1
+print('')     
+print('Keys of both candidates are the same len: ', _k)
+print('The max len of the key: ', max(max_len))
+############################################################################################
+############################################################################################
+
+
+
+
+
+
+
+
+
+
