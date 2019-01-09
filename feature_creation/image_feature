@@ -1,0 +1,112 @@
+# If you dataset contains only the url of the image, you need first to download it. 
+##########################################################################
+# This has been used in order to download the images from the candidates 
+##########################################################################
+def downloader(image_url,candidate,a,b):
+    file_name = a + candidate+b
+    full_file_name = str(file_name) + '.jpg'
+    urllib.request.urlretrieve(image_url,full_file_name)    
+os.chdir('/home/urname/Desktop/candidates_A_B_images')
+k=0
+l=0
+for i in range(len(d)):
+    for j in range (len(d[i]['candidateA']['images'])):
+        x=d[i+1495]['candidateA']['images'][j]['url']
+        try:
+            zx=requests.get(x)
+        except ConnectionError:
+            k+=1
+        else:
+            if zx.status_code==200:
+                downloader(x,'A',str(i),str(j))
+    for j in range (len(d[i]['candidateB']['images'])):
+        y=d[i]['candidateB']['images'][j]['url']
+        try:
+            zy=requests.get(y)
+        except ConnectionError:
+            l+=1
+        else:            
+            if zy.status_code==200:
+                downloader(y,'B',str(i),str(j))
+print('The urls that did not were :', k+l)
+###############################################################################################
+# Load images
+image_list=fnmatch.filter(os.listdir('.'), '*.jpg')
+###############################################################################################
+#Check which of the images have faces inside 
+#Create a New folder and keep them in order to compair them later
+start_time = time.time()
+face_image_list=[]
+not_face_image_list=[]
+provl=[]
+for i in range (len(image_list)):
+    img = cv2.imread(image_list[i])
+    if img is not None:
+        detector = MTCNN()
+        x=detector.detect_faces(img)
+        if not x:
+            not_face_image_list.append(image_list[i])
+        else:
+            if (x[0]['confidence']>0.9):
+                face_image_list.append(image_list[i])
+            else:
+                not_face_image_list.append(image_list[i])
+    else:
+        provl.append(image_list[i])
+end_time = time.time()
+###############################################################################################
+# Load the images which include face
+###############################################################################################
+face_image_list=[]
+with open('face_image_list.txt') as f:
+    for line in f:
+        face_image_list.append(line.strip('\n'))
+        
+for i in range(len(img_df)):
+    if any((t == 'A') for t in face_image_list[i]):
+        x=img_df.iloc[i][0]
+        z=x.split('A')
+        #print(z)
+        img_df_AB.ROW.iloc[i]=z[0]
+        img_df_AB.candidate.iloc[i]='A'
+        img_df_AB.num.iloc[i]=z[1]
+    elif any((t == 'B') for t in face_image_list[i]):
+        k=img_df.iloc[i][0]
+        z=k.split('B')
+        img_df_AB.ROW.iloc[i]=z[0]
+        img_df_AB.candidate.iloc[i]='B'
+        img_df_AB.num.iloc[i]=z[1]
+    else:
+        img_df_AB.ROW.iloc[i]=-1
+        img_df_AB.candidate.iloc[i]=-1
+        img_df_AB.num.iloc[i]=-1
+        
+img_df_AB.ROW=pd.to_numeric(img_df_AB.ROW, errors='coerce')       
+#sort the images by the row
+img_df_AB=img_df_AB.sort_values('ROW')  
+img_df_1=img_df.reindex(img_df_AB.index)
+img_df_AB['img']=img_df_1['img']
+###############################################################################################        
+# Image Feature Creation 
+###############################################################################################
+for i in range(len(freq_img)):
+    i=i
+    k=list(img_df_AB.img.iloc[l:m])
+    z=itertools.combinations(k, 2)
+    for im in z:
+        img_1=im[0]
+        img_2=im[1]
+        res=image_rec(img_1,img_2)
+        results.append(res)
+    x=np.mean(results)
+    res_ls.append(x)
+    l=l+freq_img.candidate.iloc[i]
+    m=l+freq_img.candidate.iloc[i+1]
+    if m-l==1:
+        res_ls.append(-1)
+            
+end_time = time.time()
+t=str(datetime.timedelta(seconds=end_time-start_time))
+print('The privious function took: ', t)  
+        
+        
