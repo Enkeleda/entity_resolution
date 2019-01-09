@@ -1,0 +1,77 @@
+##########################
+# SVM 
+##########################
+svm_mod = svm.SVC()
+svm_mod.fit(x_train, y_train)
+svm_pred=svm_mod.predict(x_test)
+print("SVM")
+np.mean(y_test==svm_pred)
+print(confusion_matrix(y_test, svm_pred))
+print(classification_report(y_test, svm_pred))
+
+##########################
+# DecisionTreeClassifier
+##########################
+dec_tree = DecisionTreeClassifier()
+dec_tree.fit(x_train, y_train)
+pred_dec_tree=dec_tree.predict(x_test)
+print("DecisionTreeClassifier")
+np.mean(y_test==pred_dec_tree)
+print(confusion_matrix(y_test, pred_dec_tree))
+print(classification_report(y_test, pred_dec_tree))
+
+##########################
+# AdaBoostClassifier 
+##########################
+adaboost_lin_cl=AdaBoostClassifier(DecisionTreeClassifier(max_depth=10),algorithm="SAMME",
+                          n_estimators=15)
+adaboost_lin_cl.fit(x_train, y_train)
+pred_adaboost_cl=adaboost_lin_cl.predict(x_test)
+print("AdaBoostRegressor")
+np.mean(y_test==pred_adaboost_cl)
+print(confusion_matrix(y_test, pred_adaboost_cl))
+print(classification_report(y_test, pred_adaboost_cl))
+
+##########################
+# RandomForestClassifier
+##########################
+rand_for = RandomForestClassifier()
+rand_for.fit(x_train, y_train)
+pred_rand_for=rand_for.predict(x_test)
+print("RandomForestClassifier")
+np.mean(y_test==pred_rand_for)
+print(confusion_matrix(y_test, pred_rand_for))
+print(classification_report(y_test, pred_rand_for))
+
+##########################
+# ExtraTreesClassifier
+##########################
+extra_tree = ExtraTreesClassifier()
+extra_tree.fit(x_train, y_train)
+pred_extra_tree=extra_tree.predict(x_test)
+print("ExtraTreesClassifier")
+np.mean(y_test==pred_extra_tree)
+print(confusion_matrix(y_test, pred_extra_tree))
+print(classification_report(y_test, pred_extra_tree))
+
+##########################
+# KNeighborsClassifier
+##########################
+k_n_bor = KNeighborsClassifier()
+k_n_bor.fit(x_train, y_train)
+pred_k_n_bor=k_n_bor.predict(x_test)
+print("KNeighborsClassifier")
+np.mean(y_test==pred_k_n_bor)
+print(confusion_matrix(y_test, pred_k_n_bor))
+print(classification_report(y_test, pred_k_n_bor))
+
+##########################
+# BaggingClassifier
+##########################
+bagging = BaggingClassifier(KNeighborsClassifier(),max_samples=0.5, max_features=0.5)
+bagging.fit(x_train, y_train)
+pred_bag=bagging.predict(x_test)
+print("BaggingClassifier")
+np.mean(y_test==pred_bag)
+print(confusion_matrix(y_test, pred_bag))
+print(classification_report(y_test, pred_bag))
