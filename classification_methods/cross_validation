@@ -1,0 +1,188 @@
+#Do cross validation using the KFold by splitting the shuffled data into k=5
+kf = RepeatedKFold(n_splits=5, n_repeats=1, random_state=None) 
+#kf= KFold(n_splits=5)
+train_list=[]
+test_list=[]
+for train_indices, test_indices in kf.split(new_no_nan_df):
+    train_list.append(train_indices)
+    test_list.append(test_indices)
+    #print('Train: %s | test: %s' % (train_indices, test_indices))
+    
+    
+##########################
+# SVM 
+##########################
+all_svm=[]
+conf_mat_svm=[]
+class_report_svm=[]
+for k in range (5):
+    cross_train_x =X.iloc[train_list[k]]
+    cross_train_y =y.iloc[train_list[k]]
+    cross_test_x=X.iloc[test_list[k]]
+    cross_test_y=y.iloc[test_list[k]]
+    # SVM
+    svm_mod = svm.SVC()
+    svm_mod.fit(cross_train_x, cross_train_y)
+    svm_pred=svm_mod.predict(cross_test_x)
+    print('The ', k ,'SVM model was successful: ',np.mean(cross_test_y==svm_pred))
+    all_svm.append(np.mean(cross_test_y==svm_pred))
+    conf_mat_svm. append(confusion_matrix(cross_test_y, svm_pred))
+    class_report_svm.append(classification_report(cross_test_y, svm_pred))
+#The SVM results 
+print('The SVM results is:',np.mean(all_svm))
+
+##########################
+# DecisionTreeClassifier
+##########################
+all_decision_tree=[]
+conf_mat_dec_tree=[]
+class_report_dec_tree=[]
+for k in range (5):
+    cross_train_x =X.iloc[train_list[k]]
+    cross_train_y =y.iloc[train_list[k]]
+    cross_test_x=X.iloc[test_list[k]]
+    cross_test_y=y.iloc[test_list[k]]
+    # DecisionTreeClassifier
+    dec_tree = DecisionTreeClassifier()
+    dec_tree.fit(cross_train_x, cross_train_y)
+    pred_dec_tree=dec_tree.predict(cross_test_x)
+    print('The ', k ,'Decision Tree Classifier model was successful: ',np.mean(cross_test_y==pred_dec_tree))
+    all_decision_tree.append(np.mean(cross_test_y==pred_dec_tree))
+    conf_mat_dec_tree. append(confusion_matrix(cross_test_y, pred_dec_tree))
+    class_report_dec_tree.append(classification_report(cross_test_y, pred_dec_tree))
+#The Decision Tree Classifier results 
+print('The Decision Tree Classifier results is:',np.mean(all_decision_tree))
+
+
+##########################
+# AdaBoostClassifier 
+##########################
+all_adaboost_cl=[]
+conf_mat_adaB=[]
+class_report_adaB=[]
+for k in range (5):
+    cross_train_x =X.iloc[train_list[k]]
+    cross_train_y =y.iloc[train_list[k]]
+    cross_test_x=X.iloc[test_list[k]]
+    cross_test_y=y.iloc[test_list[k]]
+    # AdaBoostClassifier
+    adaboost_class=AdaBoostClassifier(DecisionTreeClassifier(max_depth=10),algorithm="SAMME",
+                          n_estimators=15)
+    adaboost_class.fit(cross_train_x, cross_train_y)
+    pred_adaboost_class=adaboost_class.predict(cross_test_x)
+    print('The ', k ,'AdaBoost Classifier model was successful: ',np.mean(cross_test_y==pred_adaboost_class))
+    all_adaboost_cl.append(np.mean(cross_test_y==pred_adaboost_class))
+    conf_mat_adaB. append(confusion_matrix(cross_test_y, pred_adaboost_class))
+    class_report_adaB.append(classification_report(cross_test_y, pred_adaboost_class))
+#The AdaBoost Classifier results 
+print('The AdaBoost Classifier results is:',np.mean(all_adaboost_cl))
+
+
+##########################
+# Random Forest Classifier
+##########################
+all_random_for=[]
+conf_mat_random_for=[]
+class_report_random_for=[]
+for k in range (5):
+    cross_train_x =X.iloc[train_list[k]]
+    cross_train_y =y.iloc[train_list[k]]
+    cross_test_x=X.iloc[test_list[k]]
+    cross_test_y=y.iloc[test_list[k]]
+    # RandomForestClassifier
+    rand_for = RandomForestClassifier()
+    rand_for.fit(cross_train_x, cross_train_y)
+    pred_rand_for=rand_for.predict(cross_test_x)
+    print('The ', k ,'Random Forest Classifier model was successful: ',np.mean(cross_test_y==pred_rand_for))
+    all_random_for.append(np.mean(cross_test_y==pred_rand_for))
+    conf_mat_random_for. append(confusion_matrix(cross_test_y, pred_rand_for))
+    class_report_random_for.append(classification_report(cross_test_y, pred_rand_for))
+
+#The Random Forest Classifier  results 
+print('Random Forest Classifier results is:',np.mean(all_random_for))
+
+##########################
+# ExtraTreesClassifier
+##########################
+all_extra_tree=[]
+conf_mat_extra_tree=[]
+class_report_extra_tree=[]
+for k in range (5):
+    cross_train_x =X.iloc[train_list[k]]
+    cross_train_y =y.iloc[train_list[k]]
+    cross_test_x=X.iloc[test_list[k]]
+    cross_test_y=y.iloc[test_list[k]]
+    # ExtraTreesClassifier
+    extra_tree = ExtraTreesClassifier()
+    extra_tree.fit(cross_train_x, cross_train_y)
+    pred_extra_tree=extra_tree.predict(cross_test_x)
+    print('The ', k ,'Extra Trees Classifier model was successful: ',np.mean(cross_test_y==pred_extra_tree))
+    all_extra_tree.append(np.mean(cross_test_y==pred_extra_tree))
+    conf_mat_extra_tree. append(confusion_matrix(cross_test_y, pred_extra_tree))
+    class_report_extra_tree.append(classification_report(cross_test_y, pred_extra_tree))
+#The Extra Trees Classifier  results 
+print('Extra Trees Classifier results is:',np.mean(all_extra_tree))
+
+##########################
+# KNeighborsClassifier
+##########################
+all_kneighbors=[]
+conf_mat_k_bor=[]
+class_report_k_bor=[]
+for k in range (5):
+    cross_train_x =X.iloc[train_list[k]]
+    cross_train_y =y.iloc[train_list[k]]
+    cross_test_x=X.iloc[test_list[k]]
+    cross_test_y=y.iloc[test_list[k]]
+    # KNeighborsClassifier
+    k_n_bor = KNeighborsClassifier()
+    k_n_bor.fit(cross_train_x, cross_train_y)
+    pred_k_n_bor=k_n_bor.predict(cross_test_x)
+    print('The ', k ,'K Neighbors Classifier model was successful: ',np.mean(cross_test_y==pred_k_n_bor))
+    all_kneighbors.append(np.mean(cross_test_y==pred_k_n_bor))
+    conf_mat_k_bor. append(confusion_matrix(cross_test_y, pred_k_n_bor))
+    class_report_k_bor.append(classification_report(cross_test_y, pred_k_n_bor))
+#The K Neighbors Classifier results 
+print('K Neighbors Classifier results is:',np.mean(all_kneighbors))
+
+##########################
+# BaggingClassifier
+##########################
+all_bagging=[]
+conf_mat_bag=[]
+class_report_bag=[]
+for k in range (5):
+    cross_train_x =X.iloc[train_list[k]]
+    cross_train_y =y.iloc[train_list[k]]
+    cross_test_x=X.iloc[test_list[k]]
+    cross_test_y=y.iloc[test_list[k]]
+    # BaggingClassifier
+    bagging = BaggingClassifier(KNeighborsClassifier(),max_samples=0.5, max_features=0.5)
+    bagging.fit(cross_train_x, cross_train_y)
+    pred_bag=bagging.predict(cross_test_x)
+    print('The ', k ,'Bagging Classifier model was successful: ',np.mean(cross_test_y==pred_bag))
+    all_bagging.append(np.mean(cross_test_y==pred_bag))
+    conf_mat_bag. append(confusion_matrix(cross_test_y, pred_bag))
+    class_report_bag.append(classification_report(cross_test_y, pred_bag))
+#The Bagging Classifier results 
+print('Bagging Classifier results is:',np.mean(all_bagging))
+
+
+##########################
+# SVC
+##########################
+all_SVC=[]
+for k in range (5):
+    cross_train_x =X.iloc[train_list[k]]
+    cross_train_y =y.iloc[train_list[k]]
+    cross_test_x=X.iloc[test_list[k]]
+    cross_test_y=y.iloc[test_list[k]]
+    # BaggingClassifier
+    svc_mod = SVC()
+    svc_mod.fit(cross_train_x, cross_train_y)
+    pred_svc_mod=svc_mod.predict(cross_test_x)
+    print('The ', k ,'SVC model was successful: ',np.mean(cross_test_y==pred_svc_mod))
+    all_SVC.append(np.mean(cross_test_y==pred_svc_mod))
+
+#The SVC results 
+print('SVC results is:',np.mean(all_SVC))
