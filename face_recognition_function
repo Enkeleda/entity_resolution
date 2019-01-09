@@ -1,0 +1,15 @@
+#Face recongnition function 
+def image_rec(img_1,img_2):
+    known_image = face_recognition.load_image_file(img_1)
+    unknown_image = face_recognition.load_image_file(img_2)
+    if len(unknown_image)>150 and len(known_image)>150:
+        biden_encoding = face_recognition.face_encodings(known_image)[0]
+        unknown_encoding = face_recognition.face_encodings(unknown_image)[0]
+        results = face_recognition.compare_faces([biden_encoding], unknown_encoding)
+        if results[0]==True:
+            x=1
+        else:
+            x=0
+    else:
+        x=0
+    return(x)
