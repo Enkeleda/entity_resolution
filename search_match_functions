@@ -1,0 +1,23 @@
+#Search, match functions 
+def name_included(name, url):
+    # search if exist 
+    value = url
+    m = re.search(name, value)
+    #print(m)
+    if m!= None and m.group(0)== name:
+        #the name exist in the url
+        s=1
+        #print("search:", m.group(0))
+    else:
+        s=0
+    return(s)
+
+def full_match(url1,url2):
+    m = re.match(url1, url2)
+    if m:
+        _m=1
+        # If we have somplit match of the values(urls)
+        #print("match:", m.group(0))
+    else:
+        _m=0
+    return(_m)
