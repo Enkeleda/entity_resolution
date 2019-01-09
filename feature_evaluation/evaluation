@@ -1,0 +1,93 @@
+# Replace all the -1 values with nan (the -1 is acutally the nan that we had)
+_df=_pre_features_df.replace(to_replace=-1,value= np.nan)
+train=_df.iloc[:,0:37]
+train_labels=_df.iloc[:,37]
+# Features are in train varaible and labels are in train_labels
+fs = FeatureSelector(data = train, labels = train_labels)
+# Identify the features with more than 35% missing values
+fs.identify_missing(missing_threshold = 0.35)
+
+#The columns with the missing values and the percentage  
+fs.missing_stats.head(17)
+fs.plot_missing()
+
+# We remove the colunms with the  missing values 
+_df_new=_df.iloc[:,[0,1,2,3,4,5,6,7,8,10,11,12,13,14,20,26,32,33,34,35,36,37]].copy()
+train=_df_new.iloc[:,0:21]
+train_labels=_df_new.iloc[:,21]
+# Features are in train varaible and labels are in train_labels
+fs = FeatureSelector(data = train, labels = train_labels)
+
+fs.identify_collinear(correlation_threshold = 0.50)
+fs.plot_collinear()
+fs.plot_collinear(plot_all = True)
+
+# list of collinear features to remove
+collinear_features = fs.ops['collinear']
+# dataframe of collinear features
+fs.record_collinear.head(10)
+
+# Pass in the appropriate parameters
+fs.identify_zero_importance(task = 'classification', 
+                            eval_metric = 'auc', 
+                            n_iterations = 10, 
+                             early_stopping = True)
+# list of zero importance features
+zero_importance_features = fs.ops['zero_importance']
+
+# plot the feature importances
+fs.plot_feature_importances(threshold = 0.99, plot_n = 21)
+
+fs.identify_low_importance(cumulative_importance = 0.99)
+fs.feature_importances.head(10)
+# check the missing values
+_df_.isna().sum()
+
+# plot feature importance manually
+from numpy import loadtxt
+from xgboost import XGBClassifier
+from matplotlib import pyplot
+# split data into X and y
+X = no_nan_df.iloc[:,0:15]
+y = no_nan_df.iloc[:,16]
+# fit model no training data
+model = XGBClassifier()
+model.fit(X, y)
+# feature importance
+print(model.feature_importances_)
+# plot
+pyplot.bar(range(len(model.feature_importances_)), model.feature_importances_)
+pyplot.show()
+##################
+# XGBClassifier
+##################
+# split data into X and y
+X = no_nan_df.iloc[:,0:15]
+y = no_nan_df.iloc[:,16]
+# split data into train and test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=7)
+# fit model on all training data
+model = XGBClassifier()
+model.fit(X_train, y_train)
+# make predictions for test data and evaluate
+y_pred = model.predict(X_test)
+predictions = [round(value) for value in y_pred]
+accuracy = accuracy_score(y_test, predictions)
+print("Accuracy: %.2f%%" % (accuracy * 100.0))
+# Fit model using each importance as a threshold
+thresholds = sort(model.feature_importances_)
+for thresh in thresholds:
+    # select features using threshold
+    selection = SelectFromModel(model, threshold=thresh, prefit=True)
+    select_X_train = selection.transform(X_train)
+    # train model
+    selection_model = XGBClassifier()
+    selection_model.fit(select_X_train, y_train)
+    # eval model
+    select_X_test = selection.transform(X_test)
+    y_pred = selection_model.predict(select_X_test)
+    predictions = [round(value) for value in y_pred]
+    accuracy = accuracy_score(y_test, predictions)
+    print("Thresh=%.3f, n=%d, Accuracy: %.2f%%" % (thresh, select_X_train.shape[1], accuracy*100.0))
+    
+# Get the final dataset with the appropriate features 
