@@ -5,3 +5,7 @@ of solving the entity resolution problem of a semi-structured imbalanced dataset
 It combines machine learning and deep learning techniques in order to enhance and contribute on solving the entity resolution
 problem. Moreover, plethora of python libraries such as Fuzzywuzzy, Difflib, Urltools and Face recognition, have been employed,
 individually or in combination, to achieve work’s needs.
+
+
+
+The project part of my thesis submitted in fulfilment of the requirements for the degree of Master of Science in Data Science in the Department of Informatics,Athens University of Economics and Business.
