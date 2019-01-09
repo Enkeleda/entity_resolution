@@ -1,0 +1,80 @@
+#######################
+# EMAILS DATA Processing 
+#######################
+A_emails_df=pd.DataFrame(index=_x.index,columns=['email', 'name_part','_address_part','first_name','last_name','fullname'])
+B_emails_df=pd.DataFrame(index=_x.index,columns=['email', 'name_part','_address_part','first_name','last_name','fullname'])
+
+for i in range(len(d)):
+    B_emails_df.email[i]= d[i]['candidateB']['emails'][0]['email']
+    email = email_split(d[i]['candidateB']['emails'][0]['email'])
+    B_emails_df.name_part[i] = email.local
+    B_emails_df._address_part[i] = email.domain
+    if 'lastname' in d[i]['candidateB'].keys():
+       # B_emails_df.fullname[i]= d[i]['candidateB']['firstname']+d[i]['candidateB']['lastname']
+        B_emails_df.last_name[i]=d[i]['candidateB']['lastname']
+    else:
+        B_emails_df.last_name[i]=-1
+    B_emails_df.first_name[i]= d[i]['candidateB']['firstname']
+   # if 'fullname' in d[i]['candidateB'].keys():
+    #    B_emails_df.fullname[i]= d[i]['candidateB']['fullname']
+    ############################################################
+    A_emails_df.email[i]= d[i]['candidateA']['emails'][0]['email']
+    email = email_split(d[i]['candidateA']['emails'][0]['email'])
+    A_emails_df.name_part[i] = email.local
+    A_emails_df._address_part[i] = email.domain
+    if 'lastname' in d[i]['candidateA'].keys():
+       # A_emails_df.fullname[i]= d[i]['candidateA']['firstname']+d[i]['candidateA']['lastname']
+        A_emails_df.last_name[i]=d[i]['candidateA']['lastname']
+    else:
+        A_emails_df.last_name[i]=-1
+    A_emails_df.first_name[i]= d[i]['candidateA']['firstname']
+    #if 'fullname' in d[i]['candidateA'].keys():
+     #   A_emails_df.fullname[i]= d[i]['candidateA']['fullname']
+# Covert everything to lowercase
+#A_emails_df['fullname']=A_emails_df['fullname'].str.lower()     
+A_emails_df['name_part']=A_emails_df['name_part'].str.lower()    
+A_emails_df['_address_part']=A_emails_df['_address_part'].str.lower()    
+A_emails_df['first_name']=A_emails_df['first_name'].str.lower()    
+A_emails_df['last_name']=A_emails_df['last_name'].str.lower() 
+##
+#B_emails_df['fullname']=B_emails_df['fullname'].str.lower()     
+B_emails_df['name_part']=B_emails_df['name_part'].str.lower()    
+B_emails_df['_address_part']=B_emails_df['_address_part'].str.lower()    
+B_emails_df['first_name']=B_emails_df['first_name'].str.lower()    
+B_emails_df['last_name']=B_emails_df['last_name'].str.lower()  
+
+
+###############################################
+## EMAIIL FEATURES
+###############################################
+#Get the similarity of the first and the last name
+for i in range(len(d)):
+    _pre_features_df["name_part"][i]=SequenceMatcher(None, A_emails_df['name_part'][i],B_emails_df['name_part'][i]).ratio()
+    _pre_features_df["_address_part"][i]=SequenceMatcher(None, A_emails_df['_address_part'][i],B_emails_df['_address_part'][i]).ratio()
+    _pre_features_df["email_vs_name_A"][i]=SequenceMatcher(None, A_emails_df['name_part'][i],A_emails_df['first_name'][i]).ratio()
+    _pre_features_df["email_vs_name_B"][i]=SequenceMatcher(None, B_emails_df['name_part'][i],B_emails_df['first_name'][i]).ratio()
+    if  A_emails_df['last_name'].isnull()[i] :
+        _pre_features_df["email_vs_last_A"][i]= -1
+    else:
+        _pre_features_df["email_vs_last_A"][i]=SequenceMatcher(None, A_emails_df['name_part'][i],A_emails_df['last_name'][i]).ratio()
+    ################################################
+    if  B_emails_df['last_name'].isnull()[i] :
+        _pre_features_df["email_vs_last_B"][i]= -1
+    else:
+        _pre_features_df["email_vs_last_B"][i]=SequenceMatcher(None, B_emails_df['name_part'][i],B_emails_df['last_name'][i]).ratio()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
