@@ -1,0 +1,98 @@
+#####################################
+## WORKING EXPIRIENCE FEATURES
+####################################
+for k in range(len(d)):
+    _min=len(d[k]['candidateA']['experience_entries'])
+    _max=len(d[k]['candidateB']['experience_entries'])
+    if len(d[k]['candidateB']['experience_entries'])< len(d[k]['candidateA']['experience_entries']):
+        _min=len(d[k]['candidateB']['experience_entries'])
+        _max=len(d[k]['candidateA']['experience_entries'])
+        for i in range(_min):
+            for j in range(_max):
+                a=0
+                b=0
+                if 'company' in d[k]['candidateA']['experience_entries'][j] and 'company' in d[k]['candidateB']['experience_entries'][i]:
+                    if fuzz.partial_ratio(d[k]['candidateA']['experience_entries'][j]['company'],d[k]['candidateB']['experience_entries'][i]['company'])>65:
+                        #print(d[k]['candidateA']['experience_entries'][j]['company'],'----------',d[k]['candidateB']['experience_entries'][i]['company'])
+                        a=1
+                    if d[k]['candidateA']['experience_entries'][j]['company']==d[k]['candidateB']['experience_entries'][i]['company']:
+                        #print(d[k]['candidateA']['experience_entries'][j])
+                        b=1
+                    
+                    if a==1 or b==1 :
+                        _pre_features_df['company'][k]=1
+                        if 'title' in d[k]['candidateA']['experience_entries'][j] and 'title' in d[k]['candidateB']['experience_entries'][i]:
+                            if fuzz.partial_ratio(d[k]['candidateA']['experience_entries'][j]['title'],d[k]['candidateB']['experience_entries'][i]['title'])>65:
+                                _pre_features_df['title'][k]=1
+                            else:
+                                _pre_features_df['title'][k]=0
+                        if 'current' in d[k]['candidateA']['experience_entries'][j] :
+                            if  d[k]['candidateA']['experience_entries'][j]['current']==True :
+                                _pre_features_df['current'][k]=1
+                            else:
+                                _pre_features_df['current'][k]=0
+                        else:
+                            _pre_features_df['current'][k]=-1   
+                            
+                        if 'current' in d[k]['candidateB']['experience_entries'][i]:
+                            if  d[k]['candidateB']['experience_entries'][i]['current']== True :
+                                _pre_features_df['current'][k]=1
+                            else:
+                                _pre_features_df['current'][k]=0
+                        else:
+                            _pre_features_df['current'][k]=-1
+                    else:
+                        _pre_features_df['company'][k]=0
+                        _pre_features_df['title'][k]=0
+                        _pre_features_df['current'][k]=0
+                else:
+                    _pre_features_df['company'][k]=-1
+                    _pre_features_df['title'][k]=-1
+                    _pre_features_df['current'][k]=-1
+                        
+                        
+                        
+    if len(d[k]['candidateB']['experience_entries'])>=len(d[k]['candidateA']['experience_entries']):                    
+        for i in range(_min):
+            for j in range(_max):
+                a=0
+                b=0
+                if 'company' in d[k]['candidateA']['experience_entries'][i] and 'company' in d[k]['candidateB']['experience_entries'][j]:
+                    if fuzz.partial_ratio(d[k]['candidateA']['experience_entries'][i]['company'],d[k]['candidateB']['experience_entries'][j]['company'])>65:
+                        #print(d[k]['candidateA']['experience_entries'][i]['company'],'----------',d[k]['candidateB']['experience_entries'][j]['company'])
+                        a=1
+                    if d[k]['candidateA']['experience_entries'][i]['company']==d[k]['candidateB']['experience_entries'][j]['company']:
+                        b=1
+                        #print(d[k]['candidateA']['experience_entries'][i])
+                    if a==1 or b==1 :
+                        _pre_features_df['company'][k]=1
+                        if 'title' in d[k]['candidateA']['experience_entries'][i] and 'title' in d[k]['candidateB']['experience_entries'][j]:
+                            if fuzz.partial_ratio(d[k]['candidateA']['experience_entries'][i]['title'],d[k]['candidateB']['experience_entries'][j]['title'])>65:
+                                _pre_features_df['title'][k]=1
+                            else:
+                                _pre_features_df['title'][k]=0
+                        if 'current' in d[k]['candidateA']['experience_entries'][i] :
+                            if  d[k]['candidateA']['experience_entries'][i]['current']==True :
+                                _pre_features_df['current'][k]=1
+                            else:
+                                _pre_features_df['current'][k]=0
+                        else:
+                            _pre_features_df['current'][k]=-1
+                            
+                        if 'current' in d[k]['candidateB']['experience_entries'][j]:
+                            if  d[k]['candidateB']['experience_entries'][j]['current']== True :
+                                _pre_features_df['current'][k]=1
+                            else:
+                                _pre_features_df['current'][k]=0
+                        else:
+                            _pre_features_df['current'][k]=-1
+                    else:
+                        _pre_features_df['company'][k]=0
+                        _pre_features_df['title'][k]=0
+                        _pre_features_df['current'][k]=0
+                else:
+                    _pre_features_df['company'][k]=-1
+                    _pre_features_df['title'][k]=-1
+                    _pre_features_df['current'][k]=-1 
+
+                
