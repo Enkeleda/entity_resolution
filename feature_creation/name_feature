@@ -1,0 +1,14 @@
+#######################
+# NAME FEATURES
+#######################
+#Get the similarity of the first and the last name
+for i in range(len(d)):
+    if 'firstname' in d[i]['candidateB'].keys() and 'firstname' in d[i]['candidateA']: 
+        _pre_features_df["_1st_name"][i]=SequenceMatcher(None, d[i]['candidateA']['firstname'],d[i]['candidateB']['firstname']).ratio()
+    else:
+        _pre_features_df["_1st_name"][i]=-1
+    if 'lastname' in d[i]['candidateB'].keys() and 'lastname' in d[i]['candidateA']:
+        _pre_features_df["lastname"][i]=SequenceMatcher(None,d[i]['candidateB']['lastname'],d[i]['candidateB']['lastname']).ratio()
+    else:
+        _pre_features_df["lastname"][i]=-1
+        
