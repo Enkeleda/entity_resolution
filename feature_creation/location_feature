@@ -1,0 +1,69 @@
+#####################################
+## LOCATION FEATURES
+####################################
+for k in range(len(d)):
+    if 'locations' in d[k]['candidateA'] and 'locations' in d[k]['candidateB']:
+        _min=len(d[k]['candidateA']['locations'])
+        _max=len(d[k]['candidateB']['locations'])
+        if len(d[k]['candidateB']['locations'])< len(d[k]['candidateA']['locations']):
+            _min=len(d[k]['candidateB']['locations'])
+            _max=len(d[k]['candidateA']['locations'])
+            for i in range(_min):
+                for j in range(_max):
+                    if 'full' in d[k]['candidateA']['locations'][j] and 'full' in d[k]['candidateB']['locations'][i]:
+                        if fuzz.partial_ratio(d[k]['candidateA']['locations'][j]['full'],d[k]['candidateB']['locations'][i]['full'])>65:
+                            _pre_features_df['full'][k]=1
+                        else:
+                            _pre_features_df['full'][k]=0
+
+                        if d[k]['candidateA']['locations'][j]['full']==d[k]['candidateB']['locations'][i]['full']:
+                            #print(d[k]['candidateA']['locations'][j])
+                             _pre_features_df['full'][k]=1
+
+                    else:
+                         _pre_features_df['full'][k]=-1
+                 ################################################################           
+                    if 'fullOriginal' in d[k]['candidateA']['locations'][j] and 'fullOriginal' in d[k]['candidateB']['locations'][i]:
+                        if fuzz.partial_ratio(d[k]['candidateA']['locations'][j]['fullOriginal'],d[k]['candidateB']['locations'][i]['fullOriginal'])>65:
+                            _pre_features_df['fulloriginal'][k]=1
+                        else:
+                            _pre_features_df['fulloriginal'][k]=0
+
+                        if d[k]['candidateA']['locations'][j]['fullOriginal']==d[k]['candidateB']['locations'][i]['fullOriginal']:
+                            #print(d[k]['candidateA']['locations'][j])
+                             _pre_features_df['fulloriginal'][k]=1
+
+                    else:
+                         _pre_features_df['fulloriginal'][k]=-1
+
+        if len(d[k]['candidateB']['locations'])>=len(d[k]['candidateA']['locations']):                    
+            for i in range(_min):
+                for j in range(_max):
+                    if 'full' in d[k]['candidateA']['locations'][i] and 'full' in d[k]['candidateB']['locations'][j]:
+                        if fuzz.partial_ratio(d[k]['candidateA']['locations'][i]['full'],d[k]['candidateB']['locations'][j]['full'])>65:
+                            #print(d[k]['candidateA']['locations'][i]['full'],'----------',d[k]['candidateB']['locations'][j]['full'])
+                            _pre_features_df['full'][k]=1
+                        else:
+                            _pre_features_df['full'][k]=0
+
+                        if d[k]['candidateA']['locations'][i]['full']==d[k]['candidateB']['locations'][j]['full']:
+                            _pre_features_df['full'][k]=1
+                            #print(d[k]['candidateA']['locations'][i])
+                    else:
+                        _pre_features_df['full'][k]=-1 
+                ###########################################################################    
+                    if 'fullOriginal' in d[k]['candidateA']['locations'][i] and 'fullOriginal' in d[k]['candidateB']['locations'][j]:
+                        if fuzz.partial_ratio(d[k]['candidateA']['locations'][i]['fullOriginal'],d[k]['candidateB']['locations'][j]['fullOriginal'])>65:
+                            #print(d[k]['candidateA']['locations'][i]['full'],'----------',d[k]['candidateB']['locations'][j]['full'])
+                            _pre_features_df['fulloriginal'][k]=1
+                        else:
+                            _pre_features_df['fulloriginal'][k]=0
+
+                        if d[k]['candidateA']['locations'][i]['fullOriginal']==d[k]['candidateB']['locations'][j]['fullOriginal']:
+                            _pre_features_df['fulloriginal'][k]=1
+                            #print(d[k]['candidateA']['locations'][i])
+                    else:
+                        _pre_features_df['fulloriginal'][k]=-1 
+    else:
+        _pre_features_df['full'][k]=-1
+        _pre_features_df['fulloriginal'][k]=-1        
